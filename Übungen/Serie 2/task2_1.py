@@ -32,8 +32,12 @@ image1 = axs1.imshow(bw_img)
 # When reading in the image, all values were scaled to floats between [0,1].
 # We can see this by adding a colorbar to the view:
 axs1.set_title('Viridis Colormap (circle.png)')
-axs1.annotate("(0,0)", xytext=(0, 0), xy=(50, 50),
-              arrowprops=dict(arrowstyle="->", color="blue"))
+
+# ADDED: Arrow from (0,0) to (width//2, height//2)
+height, width = bw_img.shape
+axs1.annotate("", xytext=(0, 0), xy=(width//2, height//2),
+              arrowprops=dict(arrowstyle="->", color="black", lw=1.5))
+
 fig.colorbar(image1, ax=axs1)
 
 
@@ -44,6 +48,13 @@ fig.colorbar(image1, ax=axs1)
 # To display an image with gray levels, we can use the 'gray' colormap.
 axs2 = fig.add_subplot(2, 2, 2)
 axs2.set_title('Gray Colormap (circle.png)')
+
+# ADDED: Scatterplot blue dots on the image for every 10 coordinates
+x_coords = np.arange(10, width, 10)
+y_coords = np.arange(10, height, 10)
+x_grid, y_grid = np.meshgrid(x_coords, y_coords)
+axs2.scatter(x_grid.flatten(), y_grid.flatten(), color='blue', s=10, alpha=1)
+
 image2 = axs2.imshow(bw_img, cmap='gray')
 fig.colorbar(image2, ax=axs2)
 
@@ -70,6 +81,11 @@ Z = np.sin(Radius)
 
 # The result can be mapped to an image using a colormap
 axs3 = fig.add_subplot(2, 2, 3)
+
+# ADDED contours to the plot
+contours_3 = axs3.contour(X, Y, Z, 4, colors='black')
+axs3.clabel(contours_3, inline=True, fontsize=8)
+
 axs3.set_title('2D sin')
 image3 = axs3.imshow(Z, extent=[-3, 3, -3, 3], cmap='coolwarm')
 fig.colorbar(image3, ax=axs3)
@@ -81,6 +97,14 @@ fig.colorbar(image3, ax=axs3)
 
 # The result can also be displayed in a 3D plot
 axs4 = fig.add_subplot(2, 2, 4, projection='3d')
+
+# ADDED: 3D Contours to the plot
+contours_4_3D = axs4.contour3D(X, Y, Z, 4, colors='black')
+axs4.clabel(contours_4_3D, inline=True, fontsize=8)
+
+contours_4 = axs4.contour(X, Y, Z, 4, colors='black', offset=-1, zdir='z')
+axs4.clabel(contours_4, inline=True, fontsize=8)
+
 axs4.set_title('3D plot of 2D sin')
 plot1 = axs4.plot_surface(X, Y, Z, cmap='coolwarm')  # shows a surface
 # plot1 = axs4.plot_wireframe(X,Y,Z, cmap='coolwarm') # shows a wireframe
