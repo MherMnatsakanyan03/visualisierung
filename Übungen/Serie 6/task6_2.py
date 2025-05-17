@@ -70,10 +70,60 @@ mesh_low_pass.DeepCopy(mesh)
 # Task 2           #
 ####################
 
+# Laplace smoothing
+k_laplace = 5
+lambda_laplace = 0.5
+for _ in range(k_laplace):
+    points = mesh_laplace.GetPoints()
+    for j in range(points.GetNumberOfPoints()):
+        neighbors = getConnectedVertices(mesh_laplace, j)
+        if not neighbors:
+            continue
+        print(neighbors)
+        # old position
+        old_pos = np.array(points.GetPoint(j))
+        # average of neighbor positions
+        avg_pos = np.zeros(3)
+        for neighbor_ids in neighbors:
+            avg_pos += np.array(points.GetPoint(neighbor_ids))
+        avg_pos /= len(neighbors)
+        # Laplace step with lambda
+        new_pos = old_pos + lambda_laplace * (avg_pos - old_pos)
+        points.SetPoint(j, new_pos)
+    
 
+# Low-pass filter
 
+k_low_pass = 10
+λ = 0.5
+μ = -1.02 * λ
+n = mesh_low_pass.GetNumberOfPoints()
 
+for _ in range(k_low_pass):
+    points = mesh_low_pass.GetPoints()
+    # 1) read into a numpy array
+    P0 = np.array([points.GetPoint(i) for i in range(n)])
+    P1 = P0.copy()
 
+    # 2) λ-step (pure Laplace) into P1
+    for j in range(n):
+        neighbors = getConnectedVertices(mesh_low_pass, j)
+        if not neighbors: continue
+        L = np.mean(P0[list(neighbors)], axis=0)
+        P1[j] = P0[j] + λ * (L - P0[j])
+
+    # 3) μ-step (inverse Laplace) into P2
+    P2 = P1.copy()
+    for j in range(n):
+        neighbors = getConnectedVertices(mesh_low_pass, j)
+        if not neighbors: continue
+        L1 = np.mean(P1[list(neighbors)], axis=0)
+        P2[j] = P1[j] + μ * (L1 - P1[j])
+
+    # 4) write back
+    for j in range(n):
+        points.SetPoint(j, P2[j])
+    mesh_low_pass.Modified()
 
 
 
