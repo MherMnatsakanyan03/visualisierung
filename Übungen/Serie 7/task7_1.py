@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import vtk
 from vtk.util.numpy_support import vtk_to_numpy
+import time
 
 # ── install a DummyController so the parallel NRRD reader will run in single‐process mode ──
 dummy = vtk.vtkDummyController()
@@ -55,12 +56,23 @@ ax3 = fig.add_subplot(1,3,2)
 ax3.set_title("Ortho X-ray")
 
 # compute ortographic x-ray along z-axis
-ortho = np.zeros((x_dim, y_dim))
+
+start = time.time()
+ortho_z = np.zeros((x_dim, y_dim))
+for k in range(z_dim):
+    ortho_z += image[:, :, k]
+stop = time.time()
+print("Time for ortho projection: z-loop ", stop - start)
+
+""" start = time.time()
+ortho_x_y = np.zeros((x_dim, y_dim))
 for i in range(x_dim):
     for j in range(y_dim):
-        ortho[i,j] = np.sum(image[i,j,:])
+        ortho_x_y[i,j] = np.sum(image[i,j,:])
+stop = time.time()
+print("Time for ortho projection x-y-loop: ", stop - start) """
 
-ax3.imshow(ortho, cmap='gray')
+ax3.imshow(ortho_z, cmap='gray')
 
 ####################
 # Task 1c 
