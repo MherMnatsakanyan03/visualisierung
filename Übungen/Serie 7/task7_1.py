@@ -91,7 +91,7 @@ alpha_out = 0.06            # per‐slice opacity
 # accumulation buffers
 C_mida = np.zeros((x_dim, y_dim), dtype=float)   # color
 A_mida = np.zeros((x_dim, y_dim), dtype=float)   # opacity
-I_max = image[:, :, 0].copy()                   # initial max‐intensity
+I_max = image[:, :, 0].copy()                    # initial max‐intensity
 
 # loop over slices
 for k in range(z_dim):
