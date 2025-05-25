@@ -26,16 +26,16 @@ image = np.rot90(np.flip(image, axis=1))
 image = np.divide(image, float(np.max(image)))
 
 # create a figure
-fig = plt.figure(figsize=(16,5))
+fig = plt.figure(figsize=(16, 5))
 
 
 ####################
-# Task 1a 
+# Task 1a
 ####################
 # Maximum intensity projection
 
 # create a figure
-ax2 = fig.add_subplot(1,3,1)
+ax2 = fig.add_subplot(1, 3, 1)
 ax2.set_title("Maximum Intensity Projection")
 
 # compute maximum intensity projection along z-axis
@@ -45,14 +45,13 @@ mip = np.max(image, axis=2)
 ax2.imshow(mip, cmap='gray')
 
 
-
 ####################
-# Task 1b 
+# Task 1b
 ####################
 
 # simulate ortographic x-ray
 
-ax3 = fig.add_subplot(1,3,2)
+ax3 = fig.add_subplot(1, 3, 2)
 ax3.set_title("Ortho X-ray")
 
 # compute ortographic x-ray along z-axis
@@ -75,44 +74,45 @@ print("Time for ortho projection x-y-loop: ", stop - start) """
 ax3.imshow(ortho_z, cmap='gray')
 
 ####################
-# Task 1c 
+# Task 1c
 ####################
 gamma = 0.0
-alpha = 0.06
+alpha_out = 0.06
 
 # Maximum intensity Difference Accumulation
 
-ax4 = fig.add_subplot(1,3,3)
+ax4 = fig.add_subplot(1, 3, 3)
 ax4.set_title("Maximum Intensity Difference Accumulation")
 
 # Maximum Intensity Difference Accumulation (MIDA)
 gamma = 0.0
-alpha = 0.06
+alpha_out = 0.06            # per‐slice opacity
 
-# init intermediate buffers (per ray over z)
-C_out = np.ones((x_dim, y_dim), dtype=float)   # accumulated color
-alpha = np.zeros((x_dim, y_dim), dtype=float)  # accumulated alpha
+# accumulation buffers
+C_mida = np.zeros((x_dim, y_dim), dtype=float)   # color
+A_mida = np.zeros((x_dim, y_dim), dtype=float)   # opacity
+I_max = image[:, :, 0].copy()                   # initial max‐intensity
 
-# march along z only
+# loop over slices
 for k in range(z_dim):
     I = image[:, :, k]
-    maximum = np.max(I)
 
-    if I.all() > maximum:
-        delta = I - maximum
-    else:
-        delta = 0
-        
-    if gamma <= 0.0:
-        beta = 1- delta * (1.0 + gamma)
-    else:
-        beta = 1 - delta
-    w = alpha * beta
-    # accumulate weighted intensity
-    C_out = beta * C_out + (1.0 - beta * alpha) * C_out
-    alpha = alpha * beta + (1.0 - beta * alpha) * alpha
+    # delta = max(I - I_max, 0)
+    delta = np.maximum(I - I_max, 0.0)
+    # update running max
+    I_max = np.maximum(I_max, I)
 
-ax4.imshow(C_out, cmap='gray')
+    # beta depending on gamma
+    if gamma <= 0:
+        beta = 1.0 - delta * (1.0 + gamma)
+    else:
+        beta = 1.0 - delta
+
+    # accumulate color & opacity
+    C_mida = beta * C_mida + (1.0 - beta * A_mida) * I
+    A_mida = beta * A_mida + (1.0 - beta * A_mida) * alpha_out
+
+ax4.imshow(C_mida, cmap='gray')
 
 # Always run show, to make sure everything is displayed.
 plt.show()
