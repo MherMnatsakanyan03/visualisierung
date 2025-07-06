@@ -36,3 +36,21 @@ non-preatentive attributes: parallelism, juncture
 Color: use high luminance contrast, avoid red-green combinations, only use max 5 colors
 
 ## Chapter 3
+
+Best to worst mapping: `position` -> `length` -> `angle/slope` -> `area` -> `luminance/saturation` -> `volume/curvature`
+
+Steven's area judgment scale: $I = \alpha r^{1.4}$
+
+Rule: map most important data to the most accurate visual attribute
+
+`Simple line Graphs`: direct comparison, fine details **BUT** clutter, hard to distinguish time series
+
+`Stacked Graphs`: time series destinguish **BUT** less vertivcal resolution, hard to compare time series
+
+`Small multiples`: easy time series destinguish, easy to compare **BUT** less resolution per time, difficult to compare across time
+
+`Horiton Graphs`: vertical resolution, quick min/max **BUT** steep learning curve, hard to compare
+
+Quartils: $Q_1 = (n+1)/4$, $Q_2 = (n+1)/2$, $Q_3 = 3(n+1)/4$
+
+Parallel Coordinates: crossing lines -> negative correlation, parallel lines -> positive correlation
