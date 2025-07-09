@@ -110,3 +110,36 @@ Estemated divergence: $\div f(x,y) = f_x(x,y) - f_x(x-1,y) + f_y(x,y) - f_y(x,y-
 `Curl`: $(w_y - v_z, u_z - w_x, v_x - u_y)$
 
 ## Chapter 5
+
+Data reconstruction: get continuous data from discrete data
+
+- set constant boxes based on the data
+- interpolate the data in the boxes
+
+`Radial Basis Function`: $RBF(x) = \sum_{i=1}^n f_i \cdot \phi(||x - x_i||)$ with $\phi(x) = \exp(-x^2)$
+
+Better: $RBF(x_i) = \sum_{i=1}^n w_i \cdot \phi(||x - x_i||) = f_i$, that is: solve equation system so that line goes through all points
+
+- drawbacks: every sample point is used, so it is slow, new points need to be recalculated
+
+One solution: $\phi(x) = \frac{1}{x^2} / \sum_{i=1}^N \frac{1}{||x - x_i||^2}$
+
+New formula: $RBF(x) = \sum_{i=1}^n \frac{f_i}{||x_i - x||^2} / \sum_{i=1}^N \frac{1}{||x_i - x||^2}$
+
+- still have to calculate all again for new points
+
+`Triangulation`: connect points with triangles, then interpolate the data in the triangles
+
+- avoid long, thin triangles -> use Delaunay triangulation
+- make circle around triangle, if another triangle has line inside, flip the line
+
+`Line-interpolation`: $f(y) = x \cdot p_1 + (1-x) \cdot p_2$ with $p_1$ and $p_2$ are the two points of the line
+
+Triangle-interpolation: $f(x) = p_1 \cdot \frac{A_1}{A} + p_2 \cdot \frac{A_2}{A} + p_3 \cdot \frac{A_3}{A}$ with $A$ is the area of the triangle and $A_i$ is the area of the triangle with point $p_i$ and the two other points
+
+Grid-interpolation:
+
+- **linear**: $f(x,y)$ calculate 1D on x axis for value x, then use the result to calculate 1D on y axis for value y
+- **bilinear**: f(x,y) calculate area of quadrangle $xy$, $(1-x)y$, $x(1-y)$, $(1-x)(1-y)$, then use the areas to calculate the value with values $f_{ij}$ of opposite corners
+
+## Chapter 6
