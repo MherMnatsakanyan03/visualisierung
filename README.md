@@ -143,3 +143,23 @@ Grid-interpolation:
 - **bilinear**: f(x,y) calculate area of quadrangle $xy$, $(1-x)y$, $x(1-y)$, $(1-x)(1-y)$, then use the areas to calculate the value with values $f_{ij}$ of opposite corners
 
 ## Chapter 6
+
+Marching cubes: distinguish which way diagonal is cut by calculating middle value $\frac{sum\_of\_corners}{4}$
+
+`Connected Component Analysis`: find connected components in a binary image and only keep the largest one
+
+Smoothing:
+
+- Iterative smoothing: average the points with their neighbors
+- $x_i \leftarrow x_i + \lambda\sum_j \omega_{ij}(x_j - x_i)$ with $\omega_{ij}$ is the weight of point $j$ to point $i$ and $\lambda$ is the smoothing factor
+- Combinatorial: $\omega_{ij} = 1$ if $i$ and $j$ are neighbors, else 0
+- Laplace-Smoothing: $\omega_{ij} = \frac{1}{N(i)}$ -> loses volume
+- Laplace-Smoothing + HC: Add correction term to Laplace-Smoothing to keep volume
+- LowPass Filter: implementation of two laplace smoothing steps, with $\lambda_1 > 0$ and $\lambda_2 < 0$
+
+- Mean value filter: average the normal vector of surfaces in the neighborhood
+- Median filter: average the normal vector of surfaces in the neighborhood, but only use the median value
+
+Distance aware smoothing: Smooth more the further away from a certain point -> use distance as scaling factor
+
+## Chapter 7
