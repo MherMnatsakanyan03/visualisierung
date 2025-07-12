@@ -163,3 +163,27 @@ Smoothing:
 Distance aware smoothing: Smooth more the further away from a certain point -> use distance as scaling factor
 
 ## Chapter 7
+
+`Maximum Intensity Projection`: project the maximum value of a volume onto a 2D plane
+
+- Interpolation: use linear interpolation to get the value from inside the voxel
+- nearest neighbor: use the value of the nearest voxel
+- Nyquist-Shannon Sampling Theorem: to avoid aliasing, sample at least twice the highest frequency of the signal -> $< 0.5$ voxel size
+
+Transfer function: map data values to colors and opacities
+
+Gradients:
+
+- forward difference: $\nabla f(x,y) = \begin{pmatrix} f(x + 1) - f(x) \\ f(y+1) - f(y) \end{pmatrix}$
+- backward difference: $\nabla f(x,y) = \begin{pmatrix} f(x) - f(x - 1) \\ f(y) - f(y - 1) \end{pmatrix}$
+- central difference: $\nabla f(x,y) = \frac{1}{2} \begin{pmatrix} f(x + 1) - f(x - 1) \\ f(y + 1) - f(y - 1) \end{pmatrix}$
+
+Types of projections:
+
+- First-hit: only the first voxel that is hit by the ray is used
+- average: average all voxels that are hit by the ray
+- maximum intensity: use the maximum value of all voxels that are hit by the ray
+- cvp, threshold: use first voxel that is above a certain threshold
+- mida: local maximum of change of intensity along the ray
+
+## Chapter 8
