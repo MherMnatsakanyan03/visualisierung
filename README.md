@@ -217,3 +217,50 @@ Contours vs crease lines:
 Evaluation: Schulze method, pairwise comparison, rank order
 
 ## Chapter 9
+
+`Streamlines`: follow the arrows in once specific moment in time
+
+`Pathlines`: follow the movement of a particle over time
+
+`Streaklines`: connect particles that have passed through a point at a certain time, that is: connect all partlicles observed over time
+
+### Only draw streamlines with a certain distance
+
+`Euler Integration`: $x_{i+1} = x_i + v(x_i) \cdot \Delta t$
+
+- large errors
+
+`Runga Kutta 2nd order`: $x_{i+1} = x_i + v(x_i) \cdot \Delta t + \frac{1}{2}v(x_i + v(x_i) \cdot \Delta t) \cdot \Delta t$
+
+1. euler step
+2. on way of euler step, go back to halfway point and calculate velocity at halfway point
+3. use velocity at halfway point to calculate new position from start position
+
+`Runga Kutta 4th order`: $x_{i+1} = x_i + \frac{1}{6}(k_1 + 2k_2 + 2k_3 + k_4)$ with
+
+- $k_1 = v(x_i) \cdot \Delta t$
+- $k_2 = v(x_i + \frac{1}{2}k_1) \cdot \Delta t$
+- $k_3 = v(x_i + \frac{1}{2}k_2) \cdot \Delta t$
+- $k_4 = v(x_i + k_3) \cdot \Delta t$
+
+1. euler step
+2. on way of euler step, go back to halfway point and calculate velocity at halfway
+3. from start position, go with new velocity -> $k_2$
+4. at halfway point of $k_2$, calculate velocity and go to new position -> $k_3$
+5. at end of $k_3$, calculate velocity and go to new position -> $k_4$
+6. use all four velocities (in a certain ratio) to calculate new position
+
+Streamline Integration: Draw streamlines with a minimum distance between them, if dinstace is reached, stop integration
+
+### Only draw critical streamlines
+
+How to find critical points:
+
+- compute the gradient of the vector field and set it to zero
+- use Jacobian matrix and the eigenvalues at the critical points to determine the type of critical point
+
+### Draw fuzzy streamlines
+
+Take noise image, calculate pathlines and then use the noise image to draw the streamlines with a certain opacity
+
+## Chapter 10
