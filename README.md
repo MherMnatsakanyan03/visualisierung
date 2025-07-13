@@ -187,3 +187,33 @@ Types of projections:
 - mida: local maximum of change of intensity along the ray
 
 ## Chapter 8
+
+Surface normal: $n = -\frac{\nabla f}{||\nabla f||}$
+
+Curvature Information: $\nabla n^\top = -\nabla \frac{\nabla f}{||\nabla f||} = - \frac{1}{|\nabla f^\top|}(I - nn^\top)H$
+
+$P = I - nn^\top$ porjects all points to the plane orthogonal to the normal vector
+
+- $T=trace(G)$ sum of the diagonal elements of the matrix
+- $F = |G|_F = \sqrt{G_{11}^2 + \dots + G_{nn}^2}$
+- $\kappa_{1/2} = \frac{T \pm \sqrt{2F^2 - T^2}}{2}$
+
+Isolines on triangles: on side $e_2$: $\frac{\varphi_1}{\varphi_1-\varphi_3}\cdot e_2$
+
+Covariant Derivative: $D_{v(x)}f(x) = <\nabla\f(x), v(x)>$
+
+Contours vs crease lines:
+
+- differences:
+  - view dependent: contours are view dependent, crease lines are view independent
+  - sharp edges: creases show sharp edges
+  - contours: crease lines are not contours
+- similarities:
+  - order 1
+  - both no round edges
+  - both no bumps
+  - both show deformations
+
+Evaluation: Schulze method, pairwise comparison, rank order
+
+## Chapter 9
