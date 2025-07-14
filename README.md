@@ -200,7 +200,7 @@ $P = I - nn^\top$ porjects all points to the plane orthogonal to the normal vect
 
 Isolines on triangles: on side $e_2$: $\frac{\varphi_1}{\varphi_1-\varphi_3}\cdot e_2$
 
-Covariant Derivative: $D_{v(x)}f(x) = <\nabla\f(x), v(x)>$
+Covariant Derivative: $D_{v(x)}f(x) = <\nabla f(x), v(x)>$
 
 Contours vs crease lines:
 
